@@ -5,10 +5,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains
 
+user_mail = input('Digite seu e-mail')
+user_password = input('Digite sua senha')
 
 driver_path = r'.\content\driver\chromedriver.exe'
 bot_identity = 'friday'
-user_mail = 'mateusmp@take.net'
+insert_user_mail = 'mateusmp@take.net'
 
 driver = webdriver.Chrome(executable_path=driver_path)
 
@@ -16,11 +18,11 @@ driver.get('https://account.blip.ai/login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcal
 
 username_elem = driver.find_element_by_name('Username')
 username_elem.clear()
-username_elem.send_keys('mateussam.souza@gmail.com')
+username_elem.send_keys(user_mail)
 
 password_elem = driver.find_element_by_name('Password')
 password_elem.clear()
-password_elem.send_keys('matcar123')
+password_elem.send_keys(user_password)
 password_elem.send_keys(Keys.ENTER)
 
 driver.get('https://portal.blip.ai/application')
@@ -41,7 +43,7 @@ for bot_elem in bots_elem:
 
         WebDriverWait(driver, 120).until(
             EC.presence_of_element_located((By.NAME, 'email'))
-        ).send_keys(user_mail)
+        ).send_keys(insert_user_mail)
 
         admin_elem = WebDriverWait(driver, 120).until(
             EC.presence_of_element_located((By.XPATH, '/html/body/div[7]/div[2]/div[2]/form/div[1]/div[3]/ul/li[4]'))
@@ -62,4 +64,4 @@ for bot_elem in bots_elem:
         else:
             print('Inserted user with success')
 
-        print(f'Bot Identity: {bot_identity} | User: {user_mail}')
+        print(f'Bot Identity: {bot_identity} | User: {insert_user_mail}')
