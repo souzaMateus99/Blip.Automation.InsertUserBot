@@ -1,12 +1,12 @@
 {
     "user_info":{
-        "mail": "mateussam.souza@gmail.com",
-        "password": "matcar123"
+        "mail": "",
+        "password": ""
     },
     "bots":[
-        "zedouto"
+        ""
     ],
     "users_insert":[
-        "mateusmp@take.net"
+        ""
     ]
 }
