@@ -7,7 +7,9 @@ from selenium.webdriver.common.keys import Keys
 
 def get_base_path():
     script_path = os.path.realpath(__file__)
-    return script_path.replace(__file__[1:], '').replace('src', '')
+    file_split = __file__.split('\\')
+    
+    return script_path.replace(r'\src', '').replace(file_split[-1], '')
 
 
 def has_access_in_bot(bot_identity, driver):
@@ -36,15 +38,17 @@ blip_login_url = 'https://account.blip.ai/login?ReturnUrl=%2Fconnect%2Fauthorize
 
 base_path = get_base_path()
 driver_filepath = base_path + r'driver\chromedriver.exe'
-cofig_filepath = base_path + r'configuration\config.json'
+config_filepath = base_path + r'configuration\config.json'
 
-driver = SeleniumService.driver_factory(driver_filepath)
-config_json = ConfigService.read_config_file(cofig_filepath)
+config_json = ConfigService.read_config_file(config_filepath)
 
-user_mail = config_json['user_info']['mail']
-user_password = config_json['user_info']['password']
-users_insert_mail = config_json['users_insert']
+user_mail = config_json['userInfo']['mail']
+user_password = config_json['userInfo']['password']
+users_insert_mail = config_json['usersInsert']
 bots = config_json['bots']
+headless_browser = config_json['headlessBrowser']
+
+driver = SeleniumService.driver_factory(driver_filepath, headless_browser)
 
 driver.get(blip_login_url)
 
