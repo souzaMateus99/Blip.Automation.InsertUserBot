@@ -40,6 +40,7 @@ base_path = get_base_path()
 driver_filepath = base_path + r'driver\chromedriver.exe'
 config_filepath = base_path + r'configuration\config.json'
 
+driver = SeleniumService.driver_factory(driver_filepath)
 config_json = ConfigService.read_config_file(config_filepath)
 
 user_mail = config_json['userInfo']['mail']
