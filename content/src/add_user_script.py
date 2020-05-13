@@ -5,10 +5,10 @@ from selenium.webdriver.common.keys import Keys
 
 
 def has_access_in_bot(bot_identity, driver):
-    SeleniumService.get_request(driver, 'https://portal.blip.ai/application')
+    driver.get('https://portal.blip.ai/application')
 
     SeleniumService.find_element(driver, (By.ID, 'applications'), time_search_element)
-
+    
     bots_elem = SeleniumService.find_elements(driver, (By.XPATH, '//div[2] //contact-list //contact //div //ng-include //a'), time_search_element)
 
     print(f"Search bot {bot} in user's bot list")
@@ -36,7 +36,7 @@ user_password = config_json['user_info']['password']
 users_insert_mail = config_json['users_insert']
 bots = config_json['bots']
 
-SeleniumService.get_request(driver, blip_login_url)
+driver.get(blip_login_url)
 
 SeleniumService.find_element(driver, (By.NAME, 'Username'), time_search_element).send_keys(user_mail)
 password_elem = SeleniumService.find_element(driver, (By.NAME, 'Password'), time_search_element)
@@ -44,30 +44,36 @@ password_elem = SeleniumService.find_element(driver, (By.NAME, 'Password'), time
 password_elem.send_keys(user_password)
 password_elem.send_keys(Keys.ENTER)
 
-for bot in bots:
-    if has_access_in_bot(bot, driver):
-        SeleniumService.get_request(driver, f'https://portal.blip.ai/application/detail/{bot}/team')
+is_success_logged = True if driver.get_cookie('.AspNetCore.Antiforgery.w5W7x28NAIs') == None else False
 
-        for user_insert in users_insert_mail:            
-            SeleniumService.find_element(driver, (By.XPATH, '//*[@id="main-content-area"] //div //page-header //div[1] //div[1] //div[1] //div[2] //custom-content //button'), time_search_element).click()
-            
-            SeleniumService.find_element(driver, (By.NAME, 'email'), time_search_element).send_keys(user_insert)
+if is_success_logged:
+    for bot in bots:
+        if has_access_in_bot(bot, driver):
+            driver.get(f'https://portal.blip.ai/application/detail/{bot}/team')
 
-            admin_elem = SeleniumService.find_element(driver, (By.XPATH, '/html/body/div[7]/div[2]/div[2]/form/div[1]/div[3]/ul/li[4]'), time_search_element)
+            for user_insert in users_insert_mail:            
+                SeleniumService.find_element(driver, (By.XPATH, '//*[@id="main-content-area"] //div //page-header //div[1] //div[1] //div[1] //div[2] //custom-content //button'), time_search_element).click()
+                
+                SeleniumService.find_element(driver, (By.NAME, 'email'), time_search_element).send_keys(user_insert)
 
-            SeleniumService.move_to_element(driver, admin_elem).click().perform()
+                admin_elem = SeleniumService.find_element(driver, (By.XPATH, '/html/body/div[7]/div[2]/div[2]/form/div[1]/div[3]/ul/li[4]'), time_search_element)
 
-            SeleniumService.find_element(driver, (By.XPATH, '/html/body/div[7]/div[2]/div[2]/form/div[2]/button[2]'), time_search_element).click()
-            
-            inserted_message_elem = SeleniumService.find_element(driver, (By.XPATH, '/html/body/div[3]/div[2]/ul/li/div/span/span'), time_search_element)
+                SeleniumService.move_to_element(driver, admin_elem).click().perform()
 
-            if ocurred_error_insert(inserted_message_elem):
-                print('Ocurred error in insert')
-            else:
-                print('Inserted user with success')
+                SeleniumService.find_element(driver, (By.XPATH, '/html/body/div[7]/div[2]/div[2]/form/div[2]/button[2]'), time_search_element).click()
+                
+                inserted_message_elem = SeleniumService.find_element(driver, (By.XPATH, '/html/body/div[3]/div[2]/ul/li/div/span/span'), time_search_element)
 
-            print(f'Bot Identity: {bot} | User: {user_insert}')
-    else:
-        print(f"User haven't access to bot: {bot}")
+                if ocurred_error_insert(inserted_message_elem):
+                    print('Ocurred error in insert')
+                else:
+                    print('Inserted user with success')
 
-    print('------------------------------------------------------')
+                print(f'Bot Identity: {bot} | User: {user_insert}')
+        else:
+            print(f"User haven't access to bot: {bot}")
+
+        print('------------------------------------------------------')
+else:
+    print('User email or password is wrong')
+    print('Please verify in "config.json" file!!')
