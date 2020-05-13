@@ -16,10 +16,6 @@ def driver_factory(driver_path = '', is_headless = False):
     return webdriver.Chrome(executable_path=driver_path, chrome_options=driver_options)
 
 
-def get_request(driver, url):
-    driver.get(url)
-
-
 def find_element(driver, locator, search_timeout = 30):
     return WebDriverWait(driver, search_timeout).until(
         EC.presence_of_element_located(locator)
