@@ -1,7 +1,13 @@
+import os
 from services import ConfigService
 from services import SeleniumService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+
+
+def get_base_path():
+    script_path = os.path.realpath(__file__)
+    return script_path.replace(__file__[1:], '').replace('src', '')
 
 
 def has_access_in_bot(bot_identity, driver):
@@ -28,8 +34,12 @@ def ocurred_error_insert(element):
 time_search_element = 120
 blip_login_url = 'https://account.blip.ai/login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dblip-portal%26redirect_uri%3Dhttps%253A%252F%252Fportal.blip.ai%252Fauthorize%26response_type%3Did_token%2520token%26scope%3Doffline_access%2520openid%2520profile%2520email%2520api-msging-hub.full_access%26state%3Dfe3e8195269b4e84bb3e5e428fc48ab2%26nonce%3Da9a76f021a4c490fb43189d27a6a8e7b'
 
-driver = SeleniumService.driver_factory(r'.\content\driver\chromedriver.exe')
-config_json = ConfigService.read_config_file(r'.\content\configuration\config.json')
+base_path = get_base_path()
+driver_filepath = base_path + r'driver\chromedriver.exe'
+cofig_filepath = base_path + r'configuration\config.json'
+
+driver = SeleniumService.driver_factory(driver_filepath)
+config_json = ConfigService.read_config_file(cofig_filepath)
 
 user_mail = config_json['user_info']['mail']
 user_password = config_json['user_info']['password']
