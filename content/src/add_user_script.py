@@ -1,5 +1,6 @@
 import os
 import time
+import re
 from services import ConfigService as config_service
 from services import SeleniumService as selenium_service
 from selenium.webdriver.common.by import By
@@ -32,6 +33,38 @@ def has_access_in_bot(bot_identity, driver, time_search_element):
 
 def ocurred_error_insert(element):
     return element.text.find('problema') >= 0 or element.text.find('erro') >= 0
+
+
+def get_user_profile(user_profile):    
+    profile_dic = {
+        "Visualizar": lambda text: (re.match('^visualizar$|^1$', text, re.IGNORECASE) != None),
+        "Customizado": lambda text: (re.match('^customizado$|^2$', text, re.IGNORECASE) != None),
+        "Visualizar e editar": lambda text: (re.match('^visualizar[\s\w]+editar$|^3$', text, re.IGNORECASE) != None),
+        "Admin": lambda text: (re.match('^admin$|^4$', text, re.IGNORECASE) != None)
+    }
+    
+    for key, value in profile_dic.items():
+        if value(user_profile):
+            return key
+
+    return None
+
+
+def get_profile_elem(profile_elems, user_profile):
+    elem_value = get_user_profile(user_profile)
+    
+    if elem_value == None:
+        print('User profile not found')
+    elif elem_value != 'Customizado':
+        print('User profile found')
+
+        for elem in profile_elems:
+            if elem_value == elem.text:
+                return elem
+    else:
+        print("Profile 'Customizado' wasn't implemented yet")
+    
+    return None
 
 
 def main(driver_path, config_path, time_search_element):
@@ -69,15 +102,20 @@ def main(driver_path, config_path, time_search_element):
                     driver.get(f'https://portal.blip.ai/application/detail/{bot}/team')
 
                     for user_insert in users_insert_mail:
-                        print(f'Bot Identity: {bot} | User: {user_insert}')
+                        user_insert_mail = user_insert['mail']
+                        user_insert_profile = user_insert['profile']
+                        
+                        print(f'Bot Identity: {bot} | User: {user_insert_mail}')
                               
                         selenium_service.find_element(driver, (By.XPATH, '//*[@id="main-content-area"] //div //page-header //div[1] //div[1] //div[1] //div[2] //custom-content //button'), time_search_element).click()
                         
-                        selenium_service.find_element(driver, (By.NAME, 'email'), time_search_element).send_keys(user_insert)
+                        selenium_service.find_element(driver, (By.NAME, 'email'), time_search_element).send_keys(user_insert_mail)
 
-                        admin_elem = selenium_service.find_element(driver, (By.XPATH, '/html/body/div[7]/div[2]/div[2]/form/div[1]/div[3]/ul/li[4]'), time_search_element)
+                        profile_elems = selenium_service.find_elements(driver, (By.XPATH, '/html/body/div[7]/div[2]/div[2]/form/div[1]/div[3]/ul/li'), time_search_element)
 
-                        selenium_service.move_to_element(driver, admin_elem).click().perform()
+                        user_profile_elem = get_profile_elem(profile_elems, user_insert_profile)
+
+                        selenium_service.move_to_element(driver, user_profile_elem).click().perform()
 
                         selenium_service.find_element(driver, (By.XPATH, '/html/body/div[7]/div[2]/div[2]/form/div[2]/button[2]'), time_search_element).click()
                         
