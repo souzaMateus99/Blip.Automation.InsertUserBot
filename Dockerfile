@@ -5,7 +5,7 @@ RUN pip install -r packages/requirements.txt
 RUN pip install --user --upgrade selenium
 
 COPY content/src/ script/src/
-COPY content/configuration/config.json script/configuration/config.json
+COPY content/configuration/config.development.json script/configuration/config.json
 
 WORKDIR /script
 

@@ -147,4 +147,4 @@ def main(config_path, time_search_element):
         e.with_traceback()
 
 
-main('configuration/config.development.json', 120)
+main('configuration/config.json', 120)
