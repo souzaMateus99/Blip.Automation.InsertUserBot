@@ -1,5 +1,7 @@
 # Script to add users on [blip chatbot](https://portal.blip.ai/)
- 
+
+![gif](utils/bot-process.gif)
+
 ## What you need to use this script
 1. Clone this repository
 2. [Edit config file](#edit-config-file)
