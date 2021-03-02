@@ -131,3 +131,6 @@ content/configuration/config.json
 
 # Remove VsCode folder
 .vscode
+
+# Remove development config file
+content/configuration/config.development.json
