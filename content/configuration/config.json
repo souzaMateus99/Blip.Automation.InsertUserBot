@@ -1,16 +1,15 @@
 {
     "userInfo":{
-        "mail": "",
-        "password": ""
+        "mail": "mateussam.souza@gmail.com",
+        "password": "matcar123"
     },
     "bots":[
-        ""
+        "zedouto"
     ],
     "usersInsert":[
         {
-            "mail":"",
-            "profile":""
+            "mail":"mateusmp@take.net",
+            "profile":"Admin"
         }
-    ],
-    "headlessBrowser": false
+    ]
 }

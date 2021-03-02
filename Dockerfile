@@ -1,14 +1,12 @@
-FROM joyzoursky/python-chromedriver:3.8-alpine3.10-selenium
+FROM joyzoursky/python-chromedriver:3.8-selenium
 
-RUN mkdir packages
-
-ADD content/packages/requirements.txt packages
+COPY content/packages/requirements.txt packages/requirements.txt
 RUN pip install -r packages/requirements.txt
+RUN pip install --user --upgrade selenium
 
-RUN pip install chromedriver_installer
+COPY content/src/ script/src/
+COPY content/configuration/config.json script/configuration/config.json
 
-COPY content/configuration .
-COPY content/src/services .
-COPY content/src .
+WORKDIR /script
 
-ENTRYPOINT [ "python3", "add_user_script.py" ]
+ENTRYPOINT [ "python", "src/add_user_script.py" ]
