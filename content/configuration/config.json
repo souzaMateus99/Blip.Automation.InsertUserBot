@@ -1,16 +1,15 @@
 {
-    "userInfo":{
+    "userInfo": {
         "mail": "",
         "password": ""
     },
-    "bots":[
+    "bots": [
         ""
     ],
-    "usersInsert":[
+    "usersInsert": [
         {
-            "mail":"",
-            "profile":""
+            "mail": "",
+            "profile": ""
         }
-    ],
-    "headlessBrowser": false
+    ]
 }

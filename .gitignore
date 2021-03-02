@@ -128,3 +128,9 @@ dmypy.json
 
 # Remove to upload config json file
 content/configuration/config.json
+
+# Remove VsCode folder
+.vscode
+
+# Remove development config file
+content/configuration/config.development.json
