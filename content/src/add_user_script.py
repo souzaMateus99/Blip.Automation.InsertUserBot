@@ -10,7 +10,7 @@ user_login_info = config_json['userInfo']
 users_insert_mail = config_json['usersInsert']
 bots = config_json['bots']
 
-blip_crawler = BlipCrawlerService(user_login_info, users_insert_mail, bots)
+blip_crawler = BlipCrawlerService(user_login_info, users_insert_mail)
 
 try:
     blip_crawler.do_portal_login()
@@ -18,7 +18,7 @@ try:
     if blip_crawler.is_logged():
         print('User is logged')
         
-        for bot in blip_crawler.bots:
+        for bot in bots:
             if blip_crawler.has_access_in_bot(bot):
                 print('Bot find on user account')
 
