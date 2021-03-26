@@ -15,10 +15,9 @@ class BlipCrawlerService:
     __MILLISECONDS_WAIT_ELEMENT_LOAD = 6000
     __ONE_MINUTE_IN_SECONDS_VALUE = 60
     
-    def __init__(self, user_login, users_insert, bots):
+    def __init__(self, user_login, users_insert):
         self.user_login = user_login
         self.users_insert = users_insert
-        self.bots = bots
         self.__driver = self.__driver_factory()
 
     def do_portal_login(self):
