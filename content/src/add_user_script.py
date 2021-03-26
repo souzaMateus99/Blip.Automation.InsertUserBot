@@ -16,8 +16,12 @@ try:
     blip_crawler.do_portal_login()
 
     if blip_crawler.is_logged():
+        print('User is logged')
+        
         for bot in blip_crawler.bots:
             if blip_crawler.has_access_in_bot(bot):
+                print('Bot find on user account')
+
                 blip_crawler.do_register_team_member(bot)
 
                 if bot != bots[-1]:
